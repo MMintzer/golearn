@@ -1,8 +1,7 @@
 package main
 
 import (
-	//b64 "encoding/base64"
-	//"encoding/hex"
+	b64 "encoding/base64"
 	"encoding/hex"
 	"fmt"
 	"log"
@@ -19,6 +18,8 @@ import (
 
 // bless copy and paste from docs, I guess
 // https://pkg.go.dev/encoding/hex
+
+// this helped for encoding to base64 https://gobyexample.com/base64-encoding
 func main() {
 	const s = "49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d"
 	decoded, err := hex.DecodeString(s)
@@ -27,4 +28,7 @@ func main() {
 	}
 
 	fmt.Printf("%s\n", decoded)
+	sEnc := b64.StdEncoding.EncodeToString([]byte(decoded))
+	fmt.Println(sEnc)
+
 }
