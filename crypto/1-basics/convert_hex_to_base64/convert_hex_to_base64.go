@@ -5,6 +5,7 @@ import (
 	"encoding/hex"
 	"fmt"
 	"log"
+	"reflect"
 )
 
 // Convert hex to base64
@@ -21,14 +22,13 @@ import (
 
 // this helped for encoding to base64 https://gobyexample.com/base64-encoding
 func main() {
-	const s = "49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d"
+	const s string = "49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d"
 	decoded, err := hex.DecodeString(s)
 	if err != nil {
 		log.Fatal(err)
 	}
-
+	fmt.Println(reflect.TypeOf(decoded))
 	fmt.Printf("%s\n", decoded)
 	sEnc := b64.StdEncoding.EncodeToString([]byte(decoded))
 	fmt.Println(sEnc)
-
 }
