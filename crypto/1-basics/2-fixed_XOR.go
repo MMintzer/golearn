@@ -31,7 +31,7 @@ func fixed_xor(a string, b string) string {
 	}
 
 	// make result slice to catch results of the XORs
-	result := make([]byte, 0)
+	result := make([]byte, 0, len(a))
 	// loop over the decoded slices performing XOR and  appending to result
 	for k, v := range decoded1 {
 		result = append(result, (v ^ decoded2[k]))
