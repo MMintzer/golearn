@@ -29,7 +29,7 @@ func fixed_xor(a string, b string) string {
 	if err != nil {
 		log.Fatal(err)
 	}
-
+	fmt.Println(decoded1, decoded2)
 	// make result slice to catch results of the XORs
 	result := make([]byte, 0, len(a))
 	// loop over the decoded slices performing XOR and  appending to result

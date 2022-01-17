@@ -20,14 +20,15 @@ How? Devise some method for "scoring" a piece of English plaintext. Character fr
 Evaluate each output and choose the one with the best score.
 */
 
-func decode_hex(s string) string {
+func decode_hex(s string) []byte {
 	decoded, err := hex.DecodeString(s)
 	if err != nil {
 		log.Fatal(err)
 	}
-	return string(decoded)
+	return decoded
 }
 
+// check for common english character
 func good_char(s string) bool {
 	common_chars := []string{"a", "e", "i", "o", "u", "r", "s", "t", "l", "n"}
 	for i := 0; i < len(common_chars); i++ {
@@ -37,6 +38,8 @@ func good_char(s string) bool {
 	}
 	return false
 }
+
+// take score of a text using common english characters
 func score_text(s string) int {
 	score := 0
 	for i := 0; i < len(s); i++ {
@@ -48,30 +51,18 @@ func score_text(s string) int {
 }
 
 func fixed_xor(a string, b int) string {
-	// hex decode both input strings into slice of bytes
-	decoded1, err := hex.DecodeString(a)
-	if err != nil {
-		log.Fatal(err)
-	}
-	// decoded2, err := (b)
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
+	decoded := decode_hex(a)
 
-	// make result slice to catch results of the XORs
 	result := make([]byte, 0, len(a))
-	// loop over the decoded slices performing XOR and  appending to result
-	for _, v := range decoded1 {
+	for _, v := range decoded {
 		result = append(result, (v ^ byte(b)))
 
 	}
-	// encode the byte slice to hex and return
-	//fmt.Println(string(result))
 	return string(result)
 }
 
+// brute force XOR and keep track of best guess for decrypted message
 func single_byte_XOR_cipher(s string) string {
-	// decode hex string
 	high_score := 0
 	best_result := ""
 
@@ -82,10 +73,10 @@ func single_byte_XOR_cipher(s string) string {
 			best_result = fixed_xor(s, i)
 		}
 	}
-	fmt.Println(best_result)
-	return "hi"
+
+	return best_result
 }
 
 func main() {
-	single_byte_XOR_cipher("1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736")
+	fmt.Println(single_byte_XOR_cipher("1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736"))
 }
