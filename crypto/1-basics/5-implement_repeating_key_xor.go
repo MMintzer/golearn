@@ -1,7 +1,9 @@
 package main
 
 import (
+	"encoding/hex"
 	"fmt"
+	"strings"
 )
 
 /*
@@ -12,25 +14,36 @@ Burning 'em, if you ain't quick and nimble
 I go crazy when I hear a cymbal
 Encrypt it, under the key "ICE", using repeating-key XOR.
 
-In repeating-key XOR, you'll sequentially apply each byte of the key; the first byte of plaintext will be XOR'd against I,
- the next C, the next E, then I again for the 4th byte, and so on.
+In repeating-key XOR, you'll sequentially apply each byte of the key; the first byte of
+plaintext will be XOR'd against I, the next C, the next E, then I again for the 4th byte,
+and so on.
 
 It should come out to:
 
 0b3637272a2b2e63622c2e69692a23693a2a3c6324202d623d63343c2a26226324272765272
 a282b2f20430a652e2c652a3124333a653e2b2027630c692b20283165286326302e27282f
+
 Encrypt a bunch of stuff using your repeating-key XOR function. Encrypt your mail. Encrypt your password file. Your .sig file.
 Get a feel for it. I promise, we aren't wasting your time with this.
 */
 
 func encrypt(plaintext string, key string) string {
-	fmt.Println(plaintext, key)
+	// make a key as large as the plaintext (this is way larger and I'm taking a slice)
+	key = strings.Repeat(key, len(plaintext))
+	key = key[:len(plaintext)]
 	plain_bytes := []byte(plaintext)
-	fmt.Println(plain_bytes)
-	return "hi"
+	key_bytes := []byte(key)
+	ciphertext := []byte{}
+	for k, v := range plain_bytes {
+		ciphertext = append(ciphertext, v^key_bytes[k])
+	}
+	return hex.EncodeToString(ciphertext)
 }
 
 func main() {
+	plaintext := "Burning 'em, if you ain't quick and nimble\nI go crazy when I hear a cymbal"
+	key := "ICE"
+	ciphertext := encrypt(plaintext, key)
 
-	fmt.Println("let's get it done!")
+	fmt.Println(ciphertext)
 }
